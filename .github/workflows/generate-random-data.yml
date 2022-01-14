@@ -19,7 +19,7 @@ jobs:
       - name: Generate random file
         run: |
           FILENAME="./data/$GITHUB_RUN_ID.txt"
-          wget https://litipsum.com/api -O FILENAME
-          git add FILENAME
+          wget https://litipsum.com/api -O $FILENAME
+          git add $FILENAME
           git diff-index --quiet HEAD || git commit -m "add random file ${{ github.run_id }}.txt"
           git push
