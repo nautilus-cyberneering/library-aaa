@@ -1,0 +1,25 @@
+name: Generate random data
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set git config user to GitHub Bot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Generate random file
+        run: |
+          FILENAME="./data/$GITHUB_RUN_ID.txt"
+          wget https://litipsum.com/api -O FILENAME
+          git add FILENAME
+          git diff-index --quiet HEAD || git commit -m "add random file ${{ github.run_id }}.txt"
+          git push
